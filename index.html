@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curated Art Collection | Studio Edition</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --accent: #836026;
+            --secondary: #757575;
+            --light-gray: #f9f9f9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            z-index: 2000;
+            width: 100%;
+            height: 3px;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: var(--accent);
+            width: 0%;
+        }
+
+        /* Navigation */
+        nav {
+            padding: 30px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-left: 30px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Gallery Container */
+        .gallery {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 180px 20px 100px 20px;
+        }
+
+        .art-section {
+            margin-bottom: 250px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .art-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-container {
+            position: relative;
+            margin-bottom: 50px;
+            overflow: hidden;
+            background: var(--light-gray);
+        }
+
+        .index {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem;
+            color: rgba(0, 0, 0, 0.04);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .image-container img {
+            width: 100%;
+            display: block;
+            transition: transform 1.5s ease;
+            filter: grayscale(10%);
+        }
+
+        .image-container:hover img {
+            transform: scale(1.03);
+            filter: grayscale(0%);
+        }
+
+        .content {
+            max-width: 650px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        .meta {
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            color: var(--accent);
+            margin-bottom: 30px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .description {
+            color: var(--secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 150px 10%;
+            background-color: var(--light-gray);
+            text-align: center;
+        }
+
+        .contact-content h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .email-link {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--text);
+            text-decoration: none;
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 5px;
+            transition: opacity 0.3s;
+        }
+
+        .email-link:hover {
+            opacity: 0.6;
+        }
+
+        .social-links {
+            margin-top: 40px;
+        }
+
+        .social-links a {
+            margin: 0 15px;
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            padding: 60px 0;
+            text-align: center;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            color: #aaa;
+            background: white;
+        }
+
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 2rem;
+            }
+
+            nav {
+                padding: 20px 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            /* Mobile cleanup */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+
+    <nav>
+        <a href="#" class="logo">CHARCOAL STUDIO</a>
+        <div class="nav-links">
+            <a href="#gallery">Works</a>
+            <a href="#contact">Contact</a>
+            <a href="mailto:rajaditya82631@gmail.com">Inquiries</a>
+        </div>
+    </nav>
+
+    <main class="gallery" id="gallery">
+        <section class="art-section">
+            <div =class="image-container">
+                <span class="index">01</span>
+                <img src"m1.JPG.jpeg" alt="After Musashi">
+            </div>
+            <div class="content">
+                <span class="meta">ink on paper  &bull; 24 x 36"</span>
+                <h2>After Musashi</h2>
+                <p class="description">Inspired by the legend of Miyamoto Musashi, this sketch captures the ronin in a
+                    moment of profound introspection. The messy ink strokes mirror his chaotic journey, while his
+                    expression suggests the quietude found in the 'Void'.</p>
+            </div>
+
+        </section>
+       
+            <section class="art-section">
+                <div class="image-container">
+                    <span class="index">02</span>
+                    <img src="m2.JPG.jpeg" alt="Dark Contours">
+                </div>
+                <div class="content">
+                    <span class="meta">Charcoal &bull; 14.5X 21cm</span>
+                    <h2>Dark Contours</h2>
+                    <p class="description">A focused study of light and shadow. This piece explores the subtle curves of the human form using high-contrast shading to create depth and drama on a small scale.</p>
+                </div>
+            </section>
+
+            <section class="art-section">
+                <div class="image-container">
+                    <span class="index">03</span>
+                    <img src="m5.JPG.jpeg" alt="Stillness">
+                </div>
+                <div class="content">
+                    <span class="meta">Mixed media &bull; 14.5X 21cm</span>
+                    <h2>Stillness</h2>
+                    <p class="description">A study of a person becoming an atmosphere. This piece explores the thin veil
+                        between our physical presence and our internal headspace through blurred forms and rising
+                        shadows.</p>
+                </div>
+            </section>
+
+             <section class="art-section">
+            <div class="image-container">
+                <span class="index">01</span>
+                <img src="m6.jpeg" alt="Size is a State of mind">
+            </div>
+            <div class="content">
+                <span class="meta">Charcoal &bull;14.5X 21cm"</span>
+                <h2>A Test  of Will</h2>
+                <p class="description">"This piece explores the concept of scale and courage. I wanted to capture the moment of tension before an encounter—the tiny, lone figure standing firm against the overwhelming presence of a celestial dragon. It’s a study of contrasts: the fragile lines of the human form versus the heavy, textured power of the beast. The dragon doesn't just represent a monster; it represents the immense challenges we face that seem larger than life."</p>
+            </div>
+
+             </section>
+            
+            <section class="art-section">
+                <div class="image-container">
+                    <span class="index">03</span>
+                    <img src="m8.jpg" alt="Stillness">
+                </div>
+                <div class="content">
+                    <span class="meta">Kinetic ink study &bull; 14.5X 21cm</span>
+                    <h2>The hunger of Denji</h2>
+                    <p class="description">A portrait of survival. This piece captures Denji at his most primal—where the boy ends and the engine begins.</p>
+                </div>
+            </section>
+
+
+            
+
+    </main>
+
+    <section class="contact-section" id="contact">
+        <div class="contact-content">
+            <span class="meta">Get in Touch</span>
+            <h2>Available for Commissions</h2>
+            <p>For private acquisitions, press, or collaboration inquiries.</p>
+            <br>
+            <a href="rajaditya82631@gmail.com" class="email-link">rajaditya82631@gmail.com</a>
+
+            <div class="social-links">
+                <a
+                    href="https://www.instagram.com/adikaze1?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==">@adikaze1</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 adikaze1. Designed for the 2026 Edition.</p>
+    </footer>
+
+    <script>
+        // Progress Bar & Scroll Reveal
+        window.onscroll = function () {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+            reveal();
+        };
+
+        function reveal() {
+            let reveals = document.querySelectorAll('.art-section');
+            for (let i = 0; i < reveals.length; i++) {
+                let windowHeight = window.innerHeight;
+                let elementTop = reveals[i].getBoundingClientRect().top;
+                let elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("visible");
+                }
+            }
+        }
+
+        // Run on load
+        reveal();
+    </script>
+</body>
+
+</html>
